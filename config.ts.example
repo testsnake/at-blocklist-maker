@@ -1,0 +1,23 @@
+import type { userConfigInterface } from "./src/config.types.ts";
+
+const config: userConfigInterface = {
+    lists: [
+        {
+            // Blocklist
+            listId: "xxxxxxxxxxxxx",
+            includedUsers: [
+                {
+                    userHandleDomain: ["example.com"],
+                    userProfileHashtags: ["ILoveBeingRudeToUsers"],
+                },
+            ],
+            excludedUsers: [
+                {
+                    userDisplayNameRegex: [/[\s\[\]\(\)]*\bparody\b[\s\[\]\(\)]*/i],
+                },
+            ],
+        },
+    ],
+};
+
+export default config;
