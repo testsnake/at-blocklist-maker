@@ -47,7 +47,7 @@ export default class Crawler {
             return;
         }
 
-        const newUsers: profile[] = (await this.findRelatedUsers(profile)).slice(0, 20);
+        const newUsers: profile[] = (await this.findRelatedUsers(profile));
 
         console.log(`${newUsers.length} users found`);
 
@@ -55,7 +55,7 @@ export default class Crawler {
             newUsers.forEach(async (user) => {
                 await this.crawlLoop(user, currentLoop, distance);
             });
-        }, (loop == 0 ? 0 : 0.2*60*1000))
+        }, (loop < 2 ? 0 : 5*60*1000))
         
     }
 
