@@ -1,5 +1,5 @@
 import "jsr:@std/dotenv/load";
-import bsky from "npm:@atproto/api";
+import bsky from "@atproto/api";
 import AtManagedAgent from "./atManagedAgent.ts";
 
 interface ListAgentOptions {
