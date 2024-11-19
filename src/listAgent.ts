@@ -10,7 +10,6 @@ interface ListAgentOptions {
  * Adds users to a defined list
  */
 export default class ListAgent {
-    static instances: ListAgent[];
     public readonly client: AtManagedAgent;
 
     private constructor(client: AtManagedAgent) {

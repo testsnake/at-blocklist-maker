@@ -6,7 +6,7 @@ interface options {
     identifiers: ListIdentifiers;
 }
 
-type profile = AppBskyActorDefs.ProfileViewDetailed | AppBskyActorDefs.ProfileView;
+export type profile = AppBskyActorDefs.ProfileViewDetailed | AppBskyActorDefs.ProfileView;
 type rule = (profile: profile) => boolean;
 
 export default class VerificationHelper {
