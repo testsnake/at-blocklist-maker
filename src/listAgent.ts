@@ -33,8 +33,11 @@ export default class ListAgent {
             },
             repo: this.client.agent.did || "",
         };
+        await Deno.writeTextFile("users.log", userDID + "\n", { append: true });
+        await Deno.writeTextFile("usersRequest.log", JSON.stringify(record) + "\n", { append: true });
         const res = await this.client.agent.com.atproto.repo.createRecord(record);
-        if (!res.success) {
+        await Deno.writeTextFile("usersRes.log", JSON.stringify(res) + "\n", { append: true });
+        if (!res.success || res.data.validationStatus !== "valid") {
             console.error("------ Error adding user");
             console.error("------ Data");
             console.error(res.data);
@@ -42,6 +45,7 @@ export default class ListAgent {
             console.error(res.headers);
             console.error("------ Input");
             console.error(record);
+            throw new Error("Invalid");
         }
         return res;
     }

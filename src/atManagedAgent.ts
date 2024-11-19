@@ -1,4 +1,3 @@
-import { serviceLinkToServerDeclaration } from "./helpers.ts";
 import atproto from "@atproto/api";
 import "jsr:@std/dotenv/load";
 
@@ -30,7 +29,7 @@ export default class AtManagedAgent {
         this.agent = new atproto.AtpAgent({
             service: service,
         });
-        this.server = options.server || Deno.env.get("AT_SERVER_RDNC") || serviceLinkToServerDeclaration(service) || "";
+        this.server = options.server || Deno.env.get("AT_SERVER_RDNC") || "";
         this.loginStatus = this.login(
             options.identifier || Deno.env.get("AT_IDENTIFIER") || "",
             options.password || Deno.env.get("AT_APP_PASSWORD") || ""

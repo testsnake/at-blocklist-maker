@@ -2,7 +2,7 @@ import ListManager from "./listManager.ts";
 import { profile } from "./verificationHelper.ts";
 import AtManagedAgent from "./atManagedAgent.ts";
 
-const maxDistance = 2;
+const maxDistance = 1;
 const maxLoop = 1500;
 
 interface options {
@@ -23,12 +23,11 @@ export default class Crawler {
     }
 
     public async crawlSearchFromPhrase(starterPhrase: string) {
-        const user = await this.client.agent.searchActors({q: `"${starterPhrase}"`});
+        const user = await this.client.agent.searchActors({ q: `"${starterPhrase}"` });
         if (user.success) {
             // patient zero :)
-            this.crawlLoop(user.data.actors[0])
+            await this.crawlLoop(user.data.actors[0]);
         }
-
     }
 
     private async crawlLoop(profile: profile, loop: number = 0, distance: number = 0) {
@@ -43,16 +42,21 @@ export default class Crawler {
         if (this.listManager.inputUser(profile)) {
             currentDistance = 0;
         }
-        if (currentDistance < maxDistance && currentLoop < maxLoop) {
+        if (currentDistance > maxDistance || currentLoop > maxLoop) {
             console.log(`User ${Crawler.userCount} - returned at loop ${loop} after ${distance} distance`);
             return;
         }
 
-        const newUsers: profile[] = await this.findRelatedUsers(profile);
+        const newUsers: profile[] = (await this.findRelatedUsers(profile)).slice(0, 20);
 
-        newUsers.forEach((user) => {
-            this.crawlLoop(user, currentLoop, distance);
-        });
+        console.log(`${newUsers.length} users found`);
+
+        setTimeout(() => {
+            newUsers.forEach(async (user) => {
+                await this.crawlLoop(user, currentLoop, distance);
+            });
+        }, (loop == 0 ? 0 : 0.2*60*1000))
+        
     }
 
     private async findRelatedUsers(profile: profile): Promise<profile[]> {
@@ -65,11 +69,13 @@ export default class Crawler {
         });
 
         if (suggested.success && !suggested.data.isFallback) {
-            users.concat(suggested.data.suggestions);
+            users.push(...suggested.data.suggestions);
         }
 
-        users.concat(await this.crawlFollowing(profile));
-        users.concat(await this.crawlFollowers(profile));
+        
+
+        users.push(...await this.crawlFollowing(profile));
+        users.push(...await this.crawlFollowers(profile));
 
         return users;
     }
@@ -88,8 +94,8 @@ export default class Crawler {
 
     private async crawlProfiles(
         profile: profile,
-        totalLimit: number = 200,
-        perPageLimit: number = 50,
+        totalLimit: number = 25,
+        perPageLimit: number = 25,
         fetchFunction: (params: {
             actor: string;
             limit: number;
