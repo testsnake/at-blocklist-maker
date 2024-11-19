@@ -1,5 +1,5 @@
 import { AppBskyActorDefs } from "npm:@atproto/api";
-import { ListIdentifiers, ListFilter } from "./config.types.ts";
+import { ListIdentifiers } from "./config.types.ts";
 import { regexEscape } from "./helpers.ts";
 
 interface options {
