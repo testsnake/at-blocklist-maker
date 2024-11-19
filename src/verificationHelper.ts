@@ -1,4 +1,4 @@
-import { AppBskyActorDefs } from "npm:@atproto/api";
+import { AppBskyActorDefs } from "@atproto/api";
 import { ListIdentifiers } from "./config.types.ts";
 import { regexEscape } from "./helpers.ts";
 

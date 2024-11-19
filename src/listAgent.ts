@@ -1,4 +1,4 @@
-import "jsr:@std/dotenv/load";
+
 import bsky from "@atproto/api";
 import AtManagedAgent from "./atManagedAgent.ts";
 

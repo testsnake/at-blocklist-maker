@@ -1,5 +1,6 @@
 import { serviceLinkToServerDeclaration } from "./helpers.ts";
 import atproto from "@atproto/api";
+import "jsr:@std/dotenv/load";
 
 export interface AgentOptions {
     /** Service, e.g. https://bsky.app */
