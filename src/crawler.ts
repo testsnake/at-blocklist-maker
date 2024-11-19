@@ -6,7 +6,7 @@ const maxDistance = 2;
 const maxLoop = 1500;
 
 interface options {
-    client: AtManagedAgent;
+    client?: AtManagedAgent;
     listManager: ListManager;
 }
 
@@ -19,7 +19,7 @@ export default class Crawler {
 
     constructor(options: options) {
         this.listManager = options.listManager;
-        this.client = options.client;
+        this.client = options.client || options.listManager.listAgent.client;
     }
 
     public async crawlSearchFromPhrase(starterPhrase: string) {

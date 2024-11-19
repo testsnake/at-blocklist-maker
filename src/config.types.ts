@@ -1,5 +1,5 @@
 export interface userConfigInterface {
-    lists?: ListFilter[];
+    lists: ListFilter[];
 }
 
 /** Configuration for managing Bluesky user lists */

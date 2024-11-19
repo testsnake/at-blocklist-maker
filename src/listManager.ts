@@ -8,7 +8,7 @@ interface options {
 }
 
 export default class ListManager {
-    private listAgent: ListAgent;
+    public readonly listAgent: ListAgent;
     private listId: string;
 
     private includedRules: VerificationHelper[] = [];

@@ -19,40 +19,45 @@ export interface AgentOptions {
  * Manages agent connections
  */
 export default class AtManagedAgent {
-    static instances: AtManagedAgent[];
+    static instances: AtManagedAgent[] = [];
     public readonly agent;
     public readonly server;
     public readonly loginStatus;
 
     constructor(options: AgentOptions = {}) {
-        const service = options.service || Deno.env.get("AT-SERVER") || "";
+        const service = options.service || Deno.env.get("AT_SERVER") || "";
         this.agent = new atproto.AtpAgent({
             service: service,
         });
-        this.server = options.server || Deno.env.get("AT-SERVER-RDNC") || serviceLinkToServerDeclaration(service) || "";
+        this.server = options.server || Deno.env.get("AT_SERVER_RDNC") || serviceLinkToServerDeclaration(service) || "";
         this.loginStatus = this.login(
-            options.identifier || Deno.env.get("AT-IDENTIFIER") || "",
-            options.password || Deno.env.get("AT-APP-PASSWORD") || ""
+            options.identifier || Deno.env.get("AT_IDENTIFIER") || "",
+            options.password || Deno.env.get("AT_APP_PASSWORD") || ""
         );
     }
 
     private async login(identifier: string, password: string) {
-        // TODO: Find an easy way to do OAUTH login
-        const login = await this.agent.login({
-            identifier: identifier,
-            password: password,
-        });
+        try {
+            // TODO: Find an easy way to do OAUTH login
+            const login = await this.agent.login({
+                identifier: identifier,
+                password: password,
+            });
 
-        AtManagedAgent.instances.forEach((otherAgent) => {
-            if (otherAgent.agent.assertDid === this.agent.assertDid) {
-                console.warn(
-                    "[Warning] Multiple agents are logged into the same account. Consider using a single agent with multiple lists."
-                );
-            }
-        });
-        AtManagedAgent.instances.push(this);
+            AtManagedAgent.instances.forEach((otherAgent) => {
+                if (otherAgent.agent.assertDid === this.agent.assertDid) {
+                    console.warn(
+                        "[Warning] Multiple agents are logged into the same account. Consider using a single agent with multiple lists."
+                    );
+                }
+            });
+            AtManagedAgent.instances.push(this);
 
-        return login;
+            return login;
+        } catch (e) {
+            console.error(JSON.stringify(e));
+            throw e;
+        }
     }
 
     /**

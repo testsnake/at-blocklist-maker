@@ -41,10 +41,10 @@ export default config;
 ```
 `.env`
 ```env
-AT-SERVER="https://bluesky.app"
-AT-SERVER-RDNC="app.bluesky"
-AT-IDENTIFIER="user@example.com"
-AT-APP-PASSWORD="xxxx-xxxx-xxxx-xxxx"
+AT_SERVER="https://bluesky.app"
+AT_SERVER-RDNC="app.bluesky"
+AT_IDENTIFIER="user@example.com"
+AT_APP_PASSWORD="xxxx-xxxx-xxxx-xxxx"
 ```
 
 Run `deno main.ts` in a terminal

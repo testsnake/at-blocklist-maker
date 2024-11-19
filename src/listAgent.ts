@@ -12,7 +12,7 @@ interface ListAgentOptions {
 export default class ListAgent {
     public readonly client: AtManagedAgent;
 
-    private constructor(client: AtManagedAgent) {
+    constructor(client: AtManagedAgent) {
         this.client = client;
     }
 
